@@ -1,17 +1,17 @@
-import { ShoppingCart, Plus, Minus } from 'phosphor-react'
-import { Card } from './styles'
+import { Minus, Plus, ShoppingCart } from 'phosphor-react'
+import { CoffeeCardContainer } from './styles'
 import { useState } from 'react'
-import { useCart } from '../../hooks/useCart'
-import { formatMoney } from '../../utils/formatMoney'
+import { useCart } from '../../../../hooks/useCart'
+import { formatMoney } from '../../../../utils/formatMoney'
 
 export interface Coffee {
+  quantity: number
   id: number
   tags: string[]
   name: string
   description: string
   photo: string
   price: number
-  quantity: number
 }
 
 interface CoffeeProps {
@@ -21,9 +21,17 @@ interface CoffeeProps {
 export function CoffeeCard({ coffee }: CoffeeProps) {
   const [quantity, setQuantity] = useState(1)
 
+  function handleIncrease() {
+    setQuantity((state) => state + 1)
+  }
+
+  function handleDecrease() {
+    setQuantity((state) => state - 1)
+  }
+
   const { addCoffeeToCart } = useCart()
 
-  function handleAddCoffee() {
+  function handleAddToCart() {
     const coffeeToAdd = {
       ...coffee,
       quantity,
@@ -31,17 +39,10 @@ export function CoffeeCard({ coffee }: CoffeeProps) {
     addCoffeeToCart(coffeeToAdd)
   }
 
-  function handleIncrement() {
-    setQuantity((state) => state + 1)
-  }
-
-  function handleDecrement() {
-    setQuantity((state) => state - 1)
-  }
-
   const formattedPrice = formatMoney(coffee.price)
+
   return (
-    <Card>
+    <CoffeeCardContainer>
       <img src={`src/assets/coffees/${coffee.photo}`} alt="" />
       <ul>
         {coffee.tags.map((tag) => (
@@ -56,18 +57,18 @@ export function CoffeeCard({ coffee }: CoffeeProps) {
           {formattedPrice}
         </h1>
         <div>
-          <button disabled={quantity < 1} onClick={handleDecrement}>
+          <button disabled={quantity < 1} onClick={handleDecrease}>
             {<Minus size={14} weight="bold" />}
           </button>
           <p>{quantity}</p>
-          <button onClick={handleIncrement}>
+          <button onClick={handleIncrease}>
             {<Plus size={14} weight="bold" />}
           </button>
         </div>
-        <button onClick={handleAddCoffee}>
+        <button onClick={handleAddToCart}>
           {<ShoppingCart size={22} weight="fill" />}
         </button>
       </footer>
-    </Card>
+    </CoffeeCardContainer>
   )
 }

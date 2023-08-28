@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const Card = styled.div`
+export const CoffeeCardContainer = styled.div`
   border-radius: 8px 25px 8px 25px;
   display: flex;
   flex-direction: column;
@@ -129,5 +129,7 @@ export const Card = styled.div`
 
     padding: 0.5rem;
     border: none;
+
+    cursor: pointer;
   }
 `
